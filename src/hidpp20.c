@@ -2321,7 +2321,8 @@ int hidpp20_ext_adjustable_report_rate_set_report_rate(struct hidpp20_device *de
 #define HIDPP20_ONBOARD_PROFILES_PROFILE_TYPE_G900	0x03
 #define HIDPP20_ONBOARD_PROFILES_PROFILE_TYPE_G915	0x04
 #define HIDPP20_ONBOARD_PROFILES_PROFILE_TYPE_G502X	0x05
-#define HIDPP20_ONBOARD_PROFILES_PROFILE_TYPE_GPXSL2	0x07
+#define HIDPP20_ONBOARD_PROFILES_PROFILE_TYPE_GPXSL2    0x06
+#define HIDPP20_ONBOARD_PROFILES_PROFILE_TYPE_GPXSL2_1  0x07
 #define HIDPP20_ONBOARD_PROFILES_MACRO_TYPE_G402	0x01
 
 #define HIDPP20_USER_PROFILES_G402			0x0000
@@ -2777,7 +2778,8 @@ hidpp20_onboard_profiles_validate(struct hidpp20_device *device,
 	    (info->profile_format_id != HIDPP20_ONBOARD_PROFILES_PROFILE_TYPE_G900) &&
 	    (info->profile_format_id != HIDPP20_ONBOARD_PROFILES_PROFILE_TYPE_G915) &&
 	    (info->profile_format_id != HIDPP20_ONBOARD_PROFILES_PROFILE_TYPE_G502X) &&
-	    (info->profile_format_id != HIDPP20_ONBOARD_PROFILES_PROFILE_TYPE_GPXSL2)) {
+	    (info->profile_format_id != HIDPP20_ONBOARD_PROFILES_PROFILE_TYPE_GPXSL2) &&
+	    (info->profile_format_id != HIDPP20_ONBOARD_PROFILES_PROFILE_TYPE_GPXSL2_1)) {
 		hidpp_log_error(&device->base,
 				"Profile layout not supported: 0x%02x.\n",
 				info->profile_format_id);
@@ -3346,7 +3348,8 @@ hidpp20_onboard_profiles_parse_profile(struct hidpp20_device *device,
 	unsigned i;
 	int rc;
 
-	if (profiles_list->format_id == HIDPP20_ONBOARD_PROFILES_PROFILE_TYPE_GPXSL2) {
+	if (profiles_list->format_id == HIDPP20_ONBOARD_PROFILES_PROFILE_TYPE_GPXSL2 ||
+		profiles_list->format_id == HIDPP20_ONBOARD_PROFILES_PROFILE_TYPE_GPXSL2_1) {
 		/* Handle extended format profiles */
 		return hidpp20_onboard_profiles_parse_profile_ext(device, profiles_list, index, check_crc);
 	}
@@ -3620,7 +3623,8 @@ hidpp20_onboard_profiles_write_profile(struct hidpp20_device *device,
 	unsigned i;
 	int rc;
 
-	if (profiles_list->format_id == HIDPP20_ONBOARD_PROFILES_PROFILE_TYPE_GPXSL2) {
+	if (profiles_list->format_id == HIDPP20_ONBOARD_PROFILES_PROFILE_TYPE_GPXSL2 ||
+		profiles_list->format_id == HIDPP20_ONBOARD_PROFILES_PROFILE_TYPE_GPXSL2_1) {
 		/* Handle extended format profiles */
 		return hidpp20_onboard_profiles_write_profile_ext(device, profiles_list, index);
 	}
